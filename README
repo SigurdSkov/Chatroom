@@ -1,0 +1,6 @@
+README
+
+I am making some backend code for a chatroom. 
+For now it will simply support having multiple chat rooms with multiple participants. 
+It will save messages in a database somewhere, and send the info to a frontend somewhere.
+It will have tests, but I don't plan on expanding it any further
