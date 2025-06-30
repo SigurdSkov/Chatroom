@@ -4,6 +4,7 @@ import Entities.MessageEntity;
 import jakarta.inject.Inject;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -22,5 +23,11 @@ public class MessageDao {
                 .setParameter("cutoff", Instant.now().minus(365, ChronoUnit.DAYS))
                 .setMaxResults(255)
                 .getResultList();
+    }
+
+    @Transactional
+    public void saveChatHistory(List<MessageEntity> history) {
+        history.forEach(messageEntity -> entityManager.persist(messageEntity));
+        entityManager.persist(history);
     }
 }

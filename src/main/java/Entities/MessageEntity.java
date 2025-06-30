@@ -1,5 +1,6 @@
 package Entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Entity
 @IdClass(MessageId.class)
 @Getter
+@AllArgsConstructor
 public class MessageEntity {
     @Id
     private UUID chatroomId;
@@ -18,5 +20,4 @@ public class MessageEntity {
 
     private Timestamp time;
     private String message;
-    private String username;
 }

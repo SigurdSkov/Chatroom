@@ -1,5 +1,6 @@
 package dto;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
-public record MessageDto(String username, String text, Timestamp timestamp) {}
+public record MessageDto(UUID user, UUID chatroom, String text, Timestamp timestamp) {}

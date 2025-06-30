@@ -1,9 +1,12 @@
 package request;
 
-import java.util.List;
+import lombok.Getter;
+
 import java.util.UUID;
 
-public record MessageRequest(
-        UUID chatroomId,
-        List<UUID> userIds
-) {}
+@Getter
+public class MessageRequest {
+    UUID chatroomId;
+    UUID user;
+    String message;
+}
