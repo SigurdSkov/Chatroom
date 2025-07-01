@@ -5,5 +5,6 @@ import java.util.UUID;
 
 public record ChatroomRequest(
         UUID chatroomId,
-        List<UUID> userIds
+        List<UUID> userIds,
+        String theme
 ) {}

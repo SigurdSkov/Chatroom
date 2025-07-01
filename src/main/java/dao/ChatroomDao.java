@@ -1,5 +1,6 @@
 package dao;
 
+import entities.ChatroomEntity;
 import jakarta.inject.Inject;
 
 import javax.persistence.EntityManager;
@@ -14,5 +15,13 @@ public class ChatroomDao {
                 "WHERE c.chatroomId = :chatroomId", String.class)
                 .setParameter("chatroomId", chatroomId)
                 .getSingleResult();
+    }
+
+    public void setChatroom(ChatroomEntity entity) {
+        entityManager.persist(entity);
+    }
+
+    public void removeChatroom(ChatroomEntity entity) {
+        entityManager.remove(entity);
     }
 }

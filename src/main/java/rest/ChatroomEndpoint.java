@@ -1,23 +1,25 @@
 package rest;
-/*
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
-import service.MessageService;
+import request.ChatroomRequest;
+import service.ChatroomService;
 
-import java.util.UUID;
-
-@Path(value = "/chatroom/{chatroomId}")
+@Path(value = "/")
 public class ChatroomEndpoint {
     @Inject
-    MessageService service;
+    ChatroomService service;
 
-    @Path("/user")
+    @Path("chatroom/")
     @POST
-    public Response addUser(@PathParam("chatroomId") UUID chatroomId,
-                               @QueryParam("userId") UUID userId) {
-        return ;
+    public Response saveChatroom(ChatroomRequest request) {
+        return service.saveChatroom(request);
+    }
+
+    @Path("chatroom/")
+    @DELETE
+    public Response removeChatroom(ChatroomRequest request) {
+        return service.removeChatroom(request);
     }
 }
-
-*/

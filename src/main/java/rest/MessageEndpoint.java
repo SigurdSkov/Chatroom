@@ -1,19 +1,19 @@
 package rest;
-
-/*import jakarta.inject.Inject;
+/*
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import request.MessageRequest;
 import request.ChatroomRequest;
-import service.MessageService;
+import service.ChatroomService;
 
-@Path(value = "/chat")
+@Path(value = "/")
 public class MessageEndpoint {
     @Inject
-    MessageService service;
+    ChatroomService service;
 
-    @Path("messages")
+    @Path("chatroom/")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -21,11 +21,9 @@ public class MessageEndpoint {
         return service.GetMessage(body);
     }
 
-    @Path("messages")
+    @Path("chatroom/")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response SetMessage(MessageRequest body) {
         return service.SetMessage(body);
     }
-}
-
-*/
+}*/

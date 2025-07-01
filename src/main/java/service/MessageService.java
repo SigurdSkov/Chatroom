@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import request.MessageRequest;
 
+import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.sql.Timestamp;
@@ -20,6 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
+@Transactional
 public class MessageService {
 
     MessageDao messageDao;
@@ -41,7 +43,6 @@ public class MessageService {
                 return;
             }
         }
-
         Response.ok().build();
     }
 
