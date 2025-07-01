@@ -10,6 +10,7 @@ public class ChatroomDao {
     @Inject
     EntityManager entityManager;
 
+    //Der skal hentes når users joiner.
     public String getTheme(UUID chatroomId) {
         return entityManager.createQuery("SELECT c.theme FROM ChatroomEntity c " +
                 "WHERE c.chatroomId = :chatroomId", String.class)
