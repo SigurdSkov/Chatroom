@@ -1,4 +1,4 @@
-package Entities;
+package entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class MessageEntity {
     private UUID chatroomId;
     @Id
     private UUID userId;
-
+    @Id
     private Timestamp time;
     private String message;
 }
