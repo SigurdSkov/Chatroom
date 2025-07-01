@@ -1,5 +1,5 @@
 package dto;
 
-import java.util.List;
+import java.util.UUID;
 
-public record ChatroomDto(List<MessageDto> messageDtos, String theme) {}
+public record ChatroomDto(UUID chatroomId, String theme) {}
