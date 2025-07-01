@@ -1,24 +1,20 @@
 package service;
 
-import Entities.MessageEntity;
+import entities.MessageEntity;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dao.ChatroomDao;
 import dao.MessageDao;
 import dto.MessageDto;
-import dto.ChatroomDto;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import request.MessageRequest;
-import request.OpenChatroomRequest;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,57 +24,37 @@ public class MessageService {
 
     MessageDao messageDao;
 
-    ChatroomDao chatroomDao;
-
-    public Response GetMessage(OpenChatroomRequest body) {
-        UUID chatroomId;
-        try {
-            chatroomId = body.chatroomId();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        List<MessageDto> messageDtos = messageDao.Startup(chatroomId)
-                .stream().map(this::MessageEntityToDto)
+    public List<MessageDto> getMessageOnOpen(UUID chatroomId) {
+        return messageDao.Startup(chatroomId).stream()
+                .map(this::MessageEntityToDto)
                 .collect(Collectors.toList());
-
-        String theme = chatroomDao.getTheme(chatroomId);
-
-        messageDtos.sort(Comparator.comparing(MessageDto::timestamp).reversed());
-
-        ChatroomDto chatroomDto = new ChatroomDto(messageDtos, theme);
-
-        //Send til participants? Hvordan gør jeg det?
-        return Response.ok(chatroomDto).build();
     }
 
-    public Response SetMessage(MessageRequest body) {
+    public void SetMessage(MessageRequest body) {
         String filename = writeToFile(body);
         File file = new File(filename);
         if(file.length() > 1024*1024) {
             List<MessageEntity> messages = fromFileToMessages(file);
             messageDao.saveChatHistory(messages);
             if (!file.delete()) {
-                return Response.serverError().build();
+                Response.serverError().build();
+                return;
             }
         }
 
-        return Response.ok().build();
+        Response.ok().build();
     }
-    private MessageDto MessageEntityToDto(MessageEntity entity) {
-        return new MessageDto(entity.getUserId(), entity.getChatroomId(), entity.getMessage(), entity.getTime());
-    }
-    private MessageEntity bodyToEntity(MessageRequest body) {
-        return new MessageEntity(body.getChatroomId(), body.getUser(), Timestamp.from(Instant.now()), body.getMessage());
-    }
+
     private String writeToFile(MessageRequest body) {
         String filename;
         UUID id = body.getChatroomId();
         filename = String.format("file_%s.txt", id);
+        MessageEntity entityToSave = messageRequestToEntity(body);
+
         try {
             ObjectMapper objectMapper = new ObjectMapper();
 
-            String jsonString = objectMapper.writeValueAsString(body);
+            String jsonString = objectMapper.writeValueAsString(entityToSave);
 
             FileWriter myWriter = new FileWriter(filename);
 
@@ -107,5 +83,12 @@ public class MessageService {
         }
 
         return messages;
+    }
+
+    private MessageDto MessageEntityToDto(MessageEntity entity) {
+        return new MessageDto(entity.getUserId(), entity.getMessage(), entity.getTime());
+    }
+    private MessageEntity messageRequestToEntity(MessageRequest body) {
+        return new MessageEntity(body.getChatroomId(), body.getUser(), Timestamp.from(Instant.now()), body.getMessage());
     }
 }

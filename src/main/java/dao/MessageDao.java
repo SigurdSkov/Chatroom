@@ -1,6 +1,6 @@
 package dao;
 
-import Entities.MessageEntity;
+import entities.MessageEntity;
 import jakarta.inject.Inject;
 
 import javax.persistence.EntityManager;
