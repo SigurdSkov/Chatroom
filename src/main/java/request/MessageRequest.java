@@ -12,5 +12,5 @@ public class MessageRequest {
     UUID user;
     String message;
     Timestamp timestamp;
-    UserHandling messageType;
+    UserHandling.Method messageType;
 }

@@ -12,8 +12,6 @@ import service.MessageService;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static domain.UserHandling.Method.*;
-
 @ServerEndpoint(value = "/chat/{chatroomId}")
 public class WebSocketEndpoint {
     @Inject
@@ -50,14 +48,17 @@ public class WebSocketEndpoint {
                 case NORMAL:
                     service.SetMessage(req);
                     broadcast(chatroomId, new MessageDto(userId, req.getMessage(), req.getTimestamp()));
+                    break;
                 case ADD_USER:
                     if (!userInChat(chatroomId, userId)) {
                         addUserToChatroom(session, chatroomId, userId);
                     }
+                    break;
                 case REMOVE_USER:
                     if (userInChat(chatroomId, userId)) {
                         removeUserFromChatroom(chatroomId, userId);
                     }
+                    break;
                 default:
                     throw new RuntimeException();
             }
